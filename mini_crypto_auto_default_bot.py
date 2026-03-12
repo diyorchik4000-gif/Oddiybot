@@ -10,7 +10,13 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 # --- Environment variables (Railway uchun) ---
 API_TOKEN = os.environ.get('API_TOKEN')
-ADMIN_ID = int(os.environ.get('ADMIN_ID'))
+if API_TOKEN is None:
+    raise ValueError("❌ API_TOKEN environment variable aniqlanmagan!")
+
+ADMIN_ID = os.environ.get('ADMIN_ID')
+if ADMIN_ID is None:
+    raise ValueError("❌ ADMIN_ID environment variable aniqlanmagan!")
+ADMIN_ID = int(ADMIN_ID)
 
 bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
@@ -27,7 +33,6 @@ class AddCoinState(StatesGroup):
 # --- Helper functions ---
 def load_coins():
     if not os.path.exists(COINS_FILE):
-        # Agar coins.json yo‘q bo‘lsa, default coinlar
         default_coins = [
             {"name": "BTC", "emoji": "<tg-emoji emoji-id='5298576341325618295'>🙂</tg-emoji>"},
             {"name": "ETH", "emoji": "<tg-emoji emoji-id='5298576341325618296'>😎</tg-emoji>"},
@@ -89,7 +94,6 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
     coins = load_coins()
     users = load_users()
 
-    # --- Foydalanuvchi menyusi ---
     if data == 'buy' or data == 'sell':
         if not coins:
             await bot.answer_callback_query(callback_query.id, "Hozircha coinlar mavjud emas.")
@@ -112,7 +116,6 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
         else:
             await bot.send_message(callback_query.from_user.id, "Balans topilmadi.")
 
-    # --- Admin panel valyutalar boshqaruvi ---
     elif data == 'admin_coins':
         kb = InlineKeyboardMarkup()
         kb.add(InlineKeyboardButton("➕ Coin qo‘shish", callback_data='add_coin'))
