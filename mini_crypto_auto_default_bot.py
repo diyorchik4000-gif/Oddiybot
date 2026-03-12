@@ -1,6 +1,5 @@
 # mini_crypto_auto_default_bot.py
 import json
-import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils import executor
@@ -8,15 +7,9 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
-# --- Environment variables (Railway uchun) ---
-API_TOKEN = os.environ.get('API_TOKEN')
-if API_TOKEN is None:
-    raise ValueError("❌ API_TOKEN environment variable aniqlanmagan!")
-
-ADMIN_ID = os.environ.get('ADMIN_ID')
-if ADMIN_ID is None:
-    raise ValueError("❌ ADMIN_ID environment variable aniqlanmagan!")
-ADMIN_ID = int(ADMIN_ID)
+# --- To‘g‘ridan-to‘g‘ri token va admin ID ---
+API_TOKEN = "8309649950:AAH3ed-WBw-gsdawQc_LhuYBR11jV0rueL0"      # @BotFather’dan olgan token
+ADMIN_ID = 7399101034                  # Sizning Telegram ID (raqam)
 
 bot = Bot(token=API_TOKEN)
 storage = MemoryStorage()
